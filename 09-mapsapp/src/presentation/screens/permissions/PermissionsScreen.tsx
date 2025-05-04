@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 const PermissionsScreen = () => {
   return (
     <View>
-      xx
+      <Text>PermissionsScreen</Text>
     </View>
   );
 }

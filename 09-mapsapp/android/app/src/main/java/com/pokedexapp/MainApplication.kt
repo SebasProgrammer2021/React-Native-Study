@@ -1,4 +1,4 @@
-package com.mapsapp
+package com.pokedexapp
 
 import android.app.Application
 import com.facebook.react.PackageList
