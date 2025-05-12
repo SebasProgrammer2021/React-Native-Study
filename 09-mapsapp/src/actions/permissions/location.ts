@@ -6,7 +6,6 @@ export const requestLocationPermission = async (): Promise<PermissionStatus> => 
   let status: RNPermisionsStatus = 'unavailable';
 
   if (Platform.OS === 'ios') {
-
     /// el request abre el popup solicitando el permiso
     status = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
   } else if (Platform.OS === 'android') {
@@ -17,7 +16,7 @@ export const requestLocationPermission = async (): Promise<PermissionStatus> => 
 
   if (status === 'blocked') {
     await openSettings();
-    // return checkLocationPermission();
+    return await checkLocationPermission();
   }
 
   const permissionMapper: Record<RNPermisionsStatus, PermissionStatus> = {

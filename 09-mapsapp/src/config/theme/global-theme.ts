@@ -8,5 +8,12 @@ export const globalTheme = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20
+  },
+  btnPrimary: {
+    backgroundColor: 'black',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 100,
+    margin: 10
   }
 });
