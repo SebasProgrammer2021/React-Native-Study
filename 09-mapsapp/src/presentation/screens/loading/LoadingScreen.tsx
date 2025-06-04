@@ -1,14 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 const LoadingScreen = () => {
   return (
-    <View>
-      <Text>LoadingScreen</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size={50} color='black' />
     </View>
   );
 }
 
-const styles = StyleSheet.create({})
 
 export default LoadingScreen;

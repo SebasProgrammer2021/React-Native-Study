@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/geolocation": "^3.4.0",
     "@react-native/gradle-plugin": "^0.76.6",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
@@ -19,10 +20,12 @@
     "react-native": "0.76.6",
     "react-native-gesture-handler": "^2.22.0",
     "react-native-image-colors": "^1.5.2",
+    "react-native-maps": "^1.23.8",
     "react-native-paper": "^5.13.1",
     "react-native-permissions": "^5.4.0",
     "react-native-safe-area-context": "^5.1.0",
-    "react-native-screens": "^4.5.0"
+    "react-native-screens": "^4.5.0",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

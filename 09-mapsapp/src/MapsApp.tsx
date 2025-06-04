@@ -1,3 +1,7 @@
+// import { enableLatestRenderer } from 'react-native-maps';
+
+// enableLastestRenderer();
+
 import React from 'react';
 import { StackNavigator } from './presentation/navigator/StackNavigator';
 import { NavigationContainer } from '@react-navigation/native';
