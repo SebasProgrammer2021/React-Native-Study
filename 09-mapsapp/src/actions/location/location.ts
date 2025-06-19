@@ -19,3 +19,20 @@ export const getCurrentLocation = (): Promise<ILocation> => {
     })
   });
 }
+
+export const watchCurrentLocation = (locationCallback: (location: ILocation) => void): number => {
+  return Geolocation.watchPosition(info => (
+    locationCallback({
+      latitude: info.coords.latitude,
+      longitude: info.coords.longitude
+    })
+  ), (error) => {
+    throw new Error("Can´t get watch position");
+  }, {
+    enableHighAccuracy: true
+  });
+}
+
+export const clearWatchLocation = (watchId: number) => {
+  Geolocation.clearWatch(watchId);
+}
