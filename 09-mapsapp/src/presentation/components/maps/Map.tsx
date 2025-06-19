@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import { ILocation } from '../../../infrastructure/interfaces/location';
 import FAB from '../ui/FAB';
 import { useLocationStore } from '../../store/location/useLocationStore';
@@ -13,8 +13,9 @@ const Map = ({ showsUserLocation = true, initialLocation }: Props) => {
 
   const mapRef = useRef<MapView>();
   const cameraLocation = useRef<ILocation>(initialLocation);
-  const { getLocation, lastKnownLocation, watchLocation, clearWatchLocation } = useLocationStore();
+  const { getLocation, lastKnownLocation, watchLocation, clearWatchLocation, userLocationsHistory } = useLocationStore();
   const [isFollowingUser, setIsFollowingUser] = useState(true);
+  const [isShowingPolyline, setIsShowingPolyline] = useState(true);
 
   const moveCamaraLocation = (location: ILocation) => {
     if (!mapRef.current) return;
@@ -61,6 +62,13 @@ const Map = ({ showsUserLocation = true, initialLocation }: Props) => {
           longitudeDelta: 0.0121,
         }}
       >
+        {isShowingPolyline &&
+          <Polyline
+            coordinates={userLocationsHistory}
+            strokeColor='red'
+            strokeWidth={5}
+          />
+        }
         {/* <Marker
           coordinate={{
             latitude: 37.78825,
@@ -71,6 +79,11 @@ const Map = ({ showsUserLocation = true, initialLocation }: Props) => {
           image={require("../../../assets/custom-marker.png")}
         /> */}
       </MapView>
+      <FAB
+        iconName={isShowingPolyline ? "eye-outline" : "eye-off-outline"}
+        onPress={() => setIsShowingPolyline(!isShowingPolyline)}
+        style={{ right: 20, bottom: 140 }}
+      />
       <FAB
         iconName={isFollowingUser ? "walk-outline" : "accessibility-outline"}
         onPress={() => setIsFollowingUser(!isFollowingUser)}
