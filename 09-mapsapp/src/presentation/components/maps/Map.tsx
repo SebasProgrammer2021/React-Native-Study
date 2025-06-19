@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { ILocation } from '../../../infrastructure/interfaces/location';
 import FAB from '../ui/FAB';
@@ -13,7 +13,8 @@ const Map = ({ showsUserLocation = true, initialLocation }: Props) => {
 
   const mapRef = useRef<MapView>();
   const cameraLocation = useRef<ILocation>(initialLocation);
-  const { getLocation, lastKnownLocation } = useLocationStore();
+  const { getLocation, lastKnownLocation, watchLocation, clearWatchLocation } = useLocationStore();
+  const [isFollowingUser, setIsFollowingUser] = useState(true);
 
   const moveCamaraLocation = (location: ILocation) => {
     if (!mapRef.current) return;
@@ -31,6 +32,18 @@ const Map = ({ showsUserLocation = true, initialLocation }: Props) => {
     moveCamaraLocation(location);
   }
 
+  useEffect(() => {
+    watchLocation();
+
+    return () => clearWatchLocation();
+  }, []);
+
+
+  useEffect(() => {
+    if (lastKnownLocation && isFollowingUser) {
+      moveCamaraLocation(lastKnownLocation);
+    }
+  }, [lastKnownLocation]);
 
 
   return (
@@ -40,6 +53,7 @@ const Map = ({ showsUserLocation = true, initialLocation }: Props) => {
         showsUserLocation={showsUserLocation}
         provider={PROVIDER_GOOGLE}
         style={{ flex: 1 }}
+        onTouchStart={() => setIsFollowingUser(false)}
         region={{
           latitude: cameraLocation.current.latitude,
           longitude: cameraLocation.current.longitude,
@@ -57,6 +71,11 @@ const Map = ({ showsUserLocation = true, initialLocation }: Props) => {
           image={require("../../../assets/custom-marker.png")}
         /> */}
       </MapView>
+      <FAB
+        iconName={isFollowingUser ? "walk-outline" : "accessibility-outline"}
+        onPress={() => setIsFollowingUser(!isFollowingUser)}
+        style={{ right: 20, bottom: 80 }}
+      />
       <FAB
         iconName="compass-outline"
         onPress={moveToCurrentLocation}
