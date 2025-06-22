@@ -1,11 +1,13 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { StackNavigator } from './presentation/navigation/StackNavigator';
 
 const ProductsApp = () => {
   return (
-    <View>
-      <Text>ProductsApp</Text>
-    </View>
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
   );
 }
 
