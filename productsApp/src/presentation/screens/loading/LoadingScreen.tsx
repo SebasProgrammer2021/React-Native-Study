@@ -1,14 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, Icon, Layout, Text } from '@ui-kitten/components';
 
 const LoadingScreen = () => {
   return (
-    <View>
-      <Text>LoadingScreen</Text>
-    </View>
+    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor: 'white' }}>
+      <Text>loadingScreen</Text>
+      <Button
+        accessoryLeft={<Icon name="facebook"  />}
+      >
+        Cargando
+      </Button>
+    </Layout>
   );
 }
 
-const styles = StyleSheet.create({})
 
 export default LoadingScreen;
