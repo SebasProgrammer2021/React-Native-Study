@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { User } from "../../../domain/entities/user";
 import { AuthStatus } from "../../../infrastructure/interfaces/auth.status";
 import { authLogin } from "../../../actions/aut/auth";
+import { StorageAdapter } from "../../../config/adapters/async-storage";
 
 export interface AuthState {
   status: AuthStatus;
@@ -26,6 +27,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       set({ status: 'unauthenticated', token: undefined, user: undefined });
       return false;
     };
+
+    await StorageAdapter.setItem('token', response.token);
 
     set({ status: 'authenticated', token: response.token, user: response.user });
 
