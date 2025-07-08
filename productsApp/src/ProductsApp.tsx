@@ -5,6 +5,7 @@ import { StyleSheet, useColorScheme } from 'react-native';
 import { StackNavigator } from './presentation/navigation/StackNavigator';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { FeatherIconsPack } from '../feather-icons';
+import AuthProvider from './presentation/providers/AuthProvider';
 
 const ProductsApp = () => {
   const colorScheme = useColorScheme();
@@ -29,7 +30,9 @@ const ProductsApp = () => {
             notification: theme['color-primary-500']
           }
         }}>
-          <StackNavigator />
+          <AuthProvider>
+            <StackNavigator />
+          </AuthProvider>
         </NavigationContainer>
       </ApplicationProvider>
     </>

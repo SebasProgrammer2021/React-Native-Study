@@ -19,13 +19,24 @@ const returUserToken = (data: AuthResponse) => {
 
 export const authLogin = async (email: string, password: string) => {
   email = email.toLocaleLowerCase();
-  
+
   try {
     const { data } = await tesloApi.post<AuthResponse>("/auth/login", { email, password });
 
     return returUserToken(data);
   } catch (error) {
     console.error("Error during login:", error);
+    return null;
+  }
+}
+
+export const authCheckStatus = async () => {
+  try {
+    const { data } = await tesloApi.get<AuthResponse>("/auth/check-status");
+    return returUserToken(data);
+    
+  } catch (error) {
+    console.error("Error checking auth status:", error);
     return null;
   }
 }
