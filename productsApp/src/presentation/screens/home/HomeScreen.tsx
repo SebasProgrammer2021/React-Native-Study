@@ -3,9 +3,11 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MyIcon from '../../components/ui/MyIcon';
 import { useAuthStore } from '../../store/auth/useAuthStore';
+import { getProductsByPage } from '../../../actions/aut/products/get-products-by-page';
 
 const HomeScreen = () => {
   const { logout } = useAuthStore();
+  getProductsByPage(0)
 
   return (
     <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
