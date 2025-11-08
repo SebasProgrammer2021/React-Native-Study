@@ -1,24 +1,60 @@
-import { Button, Layout } from '@ui-kitten/components';
+import { Layout } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MyIcon from '../../components/ui/MyIcon';
+// import MyIcon from '../../components/ui/MyIcon';
 import { useAuthStore } from '../../store/auth/useAuthStore';
 import { getProductsByPage } from '../../../actions/aut/products/get-products-by-page';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import MainLayout from '../../layouts/MainLayout';
+import FullScreenLoader from '../../components/ui/FullScreenLoader';
+import ProductList from '../../components/products/ProductList';
 
 const HomeScreen = () => {
   const { logout } = useAuthStore();
-  getProductsByPage(0)
+
+  // const { isLoading, data: products = [] } = useQuery({
+  //   queryKey: ['products', 'infitite'],
+  //   staleTime: 1000 * 60 * 60,
+  //   queryFn: () => getProductsByPage(0)
+  // })
+
+  const { isLoading, data, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['products', 'infitite'],
+    staleTime: 1000 * 60 * 60,
+    initialPageParam: 0,
+    queryFn: async (params) => {
+      console.log("🚀 ~ HomeScreen ~ params:", { params });
+      const products = await getProductsByPage(params.pageParam || 0);
+      return products;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length === 0) return undefined;
+      return allPages.length;
+    }
+  })
 
   return (
-    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 30, color: "white" }}>Pantalla de inicio</Text>
-      <Button
-        accessoryRight={<MyIcon name='log-out' white />}
-        onPress={logout}
-      >
-        Cerrar sesión
-      </Button>
-    </Layout>
+    <MainLayout
+      title="TesloShop - Products"
+      subTitle='Aplicacion administrativa'
+    // rightAction={() => { }}
+    // rightActionIcon='plus'
+    >
+      {
+        isLoading ? (
+          <FullScreenLoader />
+
+        ) :
+          (
+            // <ProductList products={products} />
+            <ProductList
+              products={data?.pages.flat() ?? []}
+              fetchNextPage={fetchNextPage}
+            />
+
+          )
+      }
+    </MainLayout>
   );
 }
 

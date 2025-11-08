@@ -6,6 +6,9 @@ import { StackNavigator } from './presentation/navigation/StackNavigator';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { FeatherIconsPack } from '../feather-icons';
 import AuthProvider from './presentation/providers/AuthProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const ProductsApp = () => {
   const colorScheme = useColorScheme();
@@ -15,7 +18,7 @@ const ProductsApp = () => {
     : theme['color-basic-100'];
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <IconRegistry icons={FeatherIconsPack} />
       <ApplicationProvider {...eva} theme={theme}>
         <NavigationContainer theme={{
@@ -35,7 +38,7 @@ const ProductsApp = () => {
           </AuthProvider>
         </NavigationContainer>
       </ApplicationProvider>
-    </>
+    </QueryClientProvider>
   );
 }
 
