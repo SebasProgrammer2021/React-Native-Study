@@ -33,10 +33,16 @@ export const authLogin = async (email: string, password: string) => {
 export const authCheckStatus = async () => {
   try {
     const { data } = await tesloApi.get<AuthResponse>("/auth/check-status");
+    console.log("✅ Auth status check exitoso");
     return returUserToken(data);
     
-  } catch (error) {
-    console.error("Error checking auth status:", error);
+  } catch (error: any) {
+    // 401 es esperado cuando no hay token o expiró
+    if (error.response?.status === 401) {
+      console.log("ℹ️ No hay sesión activa (401) - Usuario no autenticado");
+    } else {
+      console.error("❌ Error checking auth status:", error.message);
+    }
     return null;
   }
 }
