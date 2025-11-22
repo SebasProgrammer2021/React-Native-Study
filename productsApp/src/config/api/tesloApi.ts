@@ -48,7 +48,7 @@ tesloApi.interceptors.response.use(
     return response;
   },
   (error) => {
-p    // 401 Unauthorized es esperado cuando no hay token o expiró
+    // 401 Unauthorized es esperado cuando no hay token o expiró
     if (error.response?.status === 401) {
       console.log('ℹ️ 401 Unauthorized - No hay token válido (esto es normal si no has hecho login)');
     } else {

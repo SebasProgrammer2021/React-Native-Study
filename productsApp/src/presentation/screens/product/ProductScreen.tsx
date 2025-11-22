@@ -67,7 +67,7 @@ const ProductScreen = ({ route }: Props) => {
       initialValues={product}
       onSubmit={mutation.mutate}
     >
-      {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
+      {({ handleChange, handleSubmit, values, setFieldValue }) => (
         <MainLayout
           title={values.title}
           subTitle={`Precio: $${values.price}`}
