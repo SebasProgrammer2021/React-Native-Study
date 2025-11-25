@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Input, Layout, Text, useTheme } from "@ui-kitten/components";
 import MainLayout from "../../layouts/MainLayout";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, QueryClient, useQueryClient } from '@tanstack/react-query';
 import { getProductById } from "../../../actions/aut/products/get-product-by-id";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigation/StackNavigator";
@@ -29,12 +29,12 @@ const genders: Gender[] = [
 ];
 
 interface Props extends StackScreenProps<RootStackParamList, 'ProductScreen'> {
-  productId: string;
 }
 
 const ProductScreen = ({ route }: Props) => {
   const productIdRef = useRef(route.params.productId);
   const theme = useTheme();
+  const queryClient = useQueryClient();
 
   const { data: product } = useQuery({
     queryKey: ['product', productIdRef.current],
@@ -44,7 +44,9 @@ const ProductScreen = ({ route }: Props) => {
   const mutation = useMutation({
     mutationFn: (data: IProduct) => updateCreateProduct({ ...data, id: productIdRef.current }),
     onSuccess: (data: IProduct) => {
-      console.log("🚀 ~ mutation ~ data:", data)
+      productIdRef.current = data.id;
+      queryClient.invalidateQueries({ queryKey: ['products', 'infitite'] });
+      queryClient.invalidateQueries({ queryKey: ['product', data.id] });
     },
     onError: (error: Error) => {
       console.log("🚀 ~ mutation ~ error:", error)
@@ -178,7 +180,7 @@ const ProductScreen = ({ route }: Props) => {
 
             {/* boton de guardar */}
             <Button
-              accessoryLeft={<MyIcon name="save" color="white" />}
+              accessoryLeft={<MyIcon name="save" white={true} />}
               onPress={() => handleSubmit()}
               disabled={mutation.isPending}
               style={{ margin: 15, marginTop: 40 }}

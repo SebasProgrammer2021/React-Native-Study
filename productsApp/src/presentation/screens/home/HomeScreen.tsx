@@ -8,9 +8,13 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import MainLayout from '../../layouts/MainLayout';
 import FullScreenLoader from '../../components/ui/FullScreenLoader';
 import ProductList from '../../components/products/ProductList';
+import FAB from '../../components/ui/FAB';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigation/StackNavigator';
 
 const HomeScreen = () => {
   const { logout } = useAuthStore();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   // const { isLoading, data: products = [] } = useQuery({
   //   queryKey: ['products', 'infitite'],
@@ -34,27 +38,33 @@ const HomeScreen = () => {
   })
 
   return (
-    <MainLayout
-      title="TesloShop - Products"
-      subTitle='Aplicacion administrativa'
-    // rightAction={() => { }}
-    // rightActionIcon='plus'
-    >
-      {
-        isLoading ? (
-          <FullScreenLoader />
+    <>
+      <MainLayout
+        title="TesloShop - Products"
+        subTitle='Aplicacion administrativa'
+      // rightAction={() => { }}
+      // rightActionIcon='plus'
+      >
+        {
+          isLoading ? (
+            <FullScreenLoader />
 
-        ) :
-          (
-            // <ProductList products={products} />
-            <ProductList
-              products={data?.pages.flat() ?? []}
-              fetchNextPage={fetchNextPage}
-            />
+          ) :
+            (
+              // <ProductList products={products} />
+              <ProductList
+                products={data?.pages.flat() ?? []}
+                fetchNextPage={fetchNextPage}
+              />
 
-          )
-      }
-    </MainLayout>
+            )
+        }
+      </MainLayout>
+      <FAB
+        iconName="plus-circle"
+        
+        onPress={() => navigation.navigate('ProductScreen', { productId: 'new' })} />
+    </>
   );
 }
 

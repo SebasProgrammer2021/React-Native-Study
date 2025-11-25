@@ -11,15 +11,17 @@ const MyIcon = ({ name, color, white = false }: Props) => {
 
   const theme = useTheme();
 
+  let finalColor = color;
+
   if (white) {
-    color = theme['color-info-100'];
-  } else if (!color) {
-    color = theme['text-basic-color'];
+    finalColor = '#FFFFFF';
+  } else if (!finalColor) {
+    finalColor = theme['text-basic-color'];
   } else {
-    color = theme[color] ?? theme['text-basic-color'];
+    finalColor = theme[finalColor] || finalColor;
   }
 
-  return <Icon style={styles.icon} fill={color} name={name} />;
+  return <Icon style={[styles.icon, { tintColor: finalColor }]} fill={finalColor} name={name} />;
 }
 
 const styles = StyleSheet.create({
