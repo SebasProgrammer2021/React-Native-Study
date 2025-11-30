@@ -56,6 +56,8 @@ const ProductScreen = ({ route }: Props) => {
         <MainLayout
           title={values.title}
           subTitle={`Precio: $${values.price}`}
+          rightAction={()=>console.log("Guardar")}
+          rightActionIcon="camera"
         >
           <ScrollView style={{ flex: 1 }}>
             <Layout style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
