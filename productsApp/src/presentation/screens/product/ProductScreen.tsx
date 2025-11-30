@@ -5,31 +5,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigation/StackNavigator";
 import { ScrollView } from "react-native-gesture-handler";
-import { Gender, IProduct, Size } from "../../../domain/entities/product";
+import { IProduct } from "../../../domain/entities/product";
 import MyIcon from "../../components/ui/MyIcon";
 import { Formik } from 'formik';
 import ProductImagesSlideShow from "../../components/products/ProductImagesSlideShow";
 import { updateCreateProduct, getProductById } from "../../../actions/aut/products";
+import { genders, sizes } from "../../../config/contants/product.contants";
 
-
-const sizes: Size[] = [
-  Size.Xs,
-  Size.S,
-  Size.M,
-  Size.L,
-  Size.Xl,
-  Size.Xxl,
-];
-
-const genders: Gender[] = [
-  Gender.Kid,
-  Gender.Men,
-  Gender.Women,
-  Gender.Unisex,
-];
-
-interface Props extends StackScreenProps<RootStackParamList, 'ProductScreen'> {
-}
+interface Props extends StackScreenProps<RootStackParamList, 'ProductScreen'> { }
 
 const ProductScreen = ({ route }: Props) => {
   const productIdRef = useRef(route.params.productId);
