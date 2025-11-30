@@ -2,19 +2,23 @@ import { isAxiosError } from "axios";
 import tesloApi from "../../../config/api/tesloApi";
 import { IProduct } from "../../../domain/entities/product";
 
+const preprareImages = (images: string[]) => {
+  //todo: revisar lso files
+
+  return images.map(
+    image => image.split('/').pop()
+  )
+}
 
 export const updateCreateProduct = (product: Partial<IProduct>) => {
   product.stock = Number.isNaN(product.stock) ? 0 : Number(product.stock);
   product.price = Number.isNaN(product.price) ? 0 : Number(product.price);
 
-  console.log({ stock: product.stock, price: product.price });
-
-
-  if (product.id) {
+  if (product.id && product.id !== 'new') {
     return updateProduct(product);
   }
 
-  throw new Error("Creación de producto no implementada");
+  return createProduct(product);
 }
 
 // todo: revisar si viene el usuario
@@ -38,14 +42,28 @@ const updateProduct = async (product: Partial<IProduct>) => {
 
     throw new Error("Error updating product");
   }
-
-
 }
 
-const preprareImages = (images: string[]) => {
-  //todo: revisar lso files
+const createProduct = async (product: Partial<IProduct>): Promise<IProduct> => {
+  const { id, images = [], ...rest } = product;
 
-  return images.map(
-    image => image.split('/').pop()
-  )
+  try {
+    const checkedImages = preprareImages(images);
+
+    const { data } = await tesloApi.post('/products/', {
+      images: checkedImages,
+      ...rest,
+    })
+    console.log("🚀 ~ createProduct ~ data:", data)
+
+    return data;
+
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.log(error.response?.data);
+    }
+
+    throw new Error("Error creating product");
+  }
 }
+

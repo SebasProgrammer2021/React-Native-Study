@@ -1,16 +1,16 @@
+import { useRef } from "react";
 import { Button, ButtonGroup, Input, Layout, Text, useTheme } from "@ui-kitten/components";
 import MainLayout from "../../layouts/MainLayout";
-import { useMutation, useQuery, QueryClient, useQueryClient } from '@tanstack/react-query';
-import { getProductById } from "../../../actions/aut/products/get-product-by-id";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigation/StackNavigator";
-import { useRef } from "react";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { FadeInImage } from "../../components/ui/FadeInImage";
+import { ScrollView } from "react-native-gesture-handler";
 import { Gender, IProduct, Size } from "../../../domain/entities/product";
 import MyIcon from "../../components/ui/MyIcon";
 import { Formik } from 'formik';
-import { updateCreateProduct } from "../../../actions/aut/products/update-create-product";
+import ProductImagesSlideShow from "../../components/products/ProductImagesSlideShow";
+import { updateCreateProduct, getProductById } from "../../../actions/aut/products";
+
 
 const sizes: Size[] = [
   Size.Xs,
@@ -75,19 +75,8 @@ const ProductScreen = ({ route }: Props) => {
           subTitle={`Precio: $${values.price}`}
         >
           <ScrollView style={{ flex: 1 }}>
-            <Layout>
-              <FlatList
-                data={values.images}
-                keyExtractor={(item) => item}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <FadeInImage
-                    uri={item}
-                    style={{ width: 300, height: 300, marginHorizontal: 10 }}
-                  />
-                )}
-              />
+            <Layout style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
+              <ProductImagesSlideShow images={values.images} />
             </Layout>
             <Layout style={{ marginHorizontal: 10 }}>
               <Input
@@ -187,7 +176,6 @@ const ProductScreen = ({ route }: Props) => {
             >
               Guardar cambios
             </Button>
-            <Text>{JSON.stringify(values, null, 2)}</Text>
             <Layout style={{ height: 160 }} />
           </ScrollView>
         </MainLayout>
