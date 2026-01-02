@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import ProductImagesSlideShow from "../../components/products/ProductImagesSlideShow";
 import { updateCreateProduct, getProductById } from "../../../actions/aut/products";
 import { genders, sizes } from "../../../config/contants/product.contants";
+import { CameraAdapter } from "../../../config/adapters/camera-adapter";
 
 interface Props extends StackScreenProps<RootStackParamList, 'ProductScreen'> { }
 
@@ -56,7 +57,15 @@ const ProductScreen = ({ route }: Props) => {
         <MainLayout
           title={values.title}
           subTitle={`Precio: $${values.price}`}
-          rightAction={()=>console.log("Guardar")}
+          rightAction={async () => {
+            const photos = await CameraAdapter.pickImageFromLibrary();
+            if (photos.length > 0) {
+              console.log('Agregando fotos:', photos);
+              setFieldValue('images', [...values.images, ...photos]);
+            } else {
+              console.log('No se agregaron fotos (usuario canceló o hubo error)');
+            }
+          }}
           rightActionIcon="camera"
         >
           <ScrollView style={{ flex: 1 }}>
