@@ -61,6 +61,13 @@ react {
     autolinkLibrariesWithApp()
 }
 
+// Forzar regeneración de código con codegen
+afterEvaluate {
+    tasks.named("preBuild") {
+        dependsOn(":app:generateCodegenArtifactsFromSchema")
+    }
+}
+
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
