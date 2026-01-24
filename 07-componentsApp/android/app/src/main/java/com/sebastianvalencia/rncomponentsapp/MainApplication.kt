@@ -1,4 +1,4 @@
-package com.componentsapp
+package com.sebastianvalencia.rncomponentsapp
 
 import android.app.Application
 import com.facebook.react.PackageList
